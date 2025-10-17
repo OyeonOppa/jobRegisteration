@@ -3,7 +3,7 @@
 // ==================================================
 
 // !!! สำคัญ: เปลี่ยน URL นี้เป็น URL ของ Google Apps Script ที่คุณ Deploy แล้ว
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwMmhuztyNYfzJ99SK-Cko8qikN_md8c8u5UjAbES3sRmWPNQnMPYMWhvHCAnqW1eS_/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyEGz_Bpfwuc7k_51vsRHcGNI-4eN_mVkCibny3VFyQNL6Tf4LIRhsBGVTuAW23uHg/exec';
 
 // ==================================================
 // Form Validation
