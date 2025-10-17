@@ -3,391 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบรับสมัครงาน</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-    </style>
+    <title>ใบสมัครงาน - สถาบันพระปกเกล้า</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="root"></div>
+    <!-- Header -->
+    <header class="header-section">
+        <div class="container">
+            <div class="row align-items-center py-4">
+                <div class="col-md-2 text-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/th/thumb/6/65/King_Prajadhipok%27s_Institute_Logo.svg/1200px-King_Prajadhipok%27s_Institute_Logo.svg.png" 
+                         alt="KPI Logo" class="logo">
+                </div>
+                <div class="col-md-10">
+                    <h1 class="institute-name">สถาบันพระปกเกล้า</h1>
+                    <h2 class="institute-name-en">KING PRAJADHIPOK'S INSTITUTE</h2>
+                    <h3 class="form-title">ใบสมัครงาน / Application for Employment</h3>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <script type="text/babel">
-        const { useState } = React;
-
-        const JobApplicationSystem = () => {
-            const [formData, setFormData] = useState({
-                fullName: '',
-                email: '',
-                phone: '',
-                address: '',
-                education: '',
-                experience: '',
-                position: '',
-                salary: '',
-                startDate: '',
-                skills: '',
-                portfolio: '',
-                coverLetter: ''
-            });
-
-            const [currentStep, setCurrentStep] = useState('form');
-            const [isSubmitting, setIsSubmitting] = useState(false);
-
-            const handleInputChange = (e) => {
-                const { name, value } = e.target;
-                setFormData(prev => ({
-                    ...prev,
-                    [name]: value
-                }));
-            };
-
-            const handleSubmit = async () => {
-                setIsSubmitting(true);
-                
-                try {
-                    // TODO: ใส่ URL ของ Google Apps Script ตรงนี้
-                    const GOOGLE_SCRIPT_URL = '14r1rXFwJfXkJcZxi3Llb5lhvPIRsOtM56da-piSbb7U';
-                    
-                    if (GOOGLE_SCRIPT_URL === '14r1rXFwJfXkJcZxi3Llb5lhvPIRsOtM56da-piSbb7U') {
-                        // กรณียังไม่ได้ใส่ URL จริง - จำลองการทำงาน
-                        console.log('ข้อมูลที่จะส่ง:', formData);
-                        setTimeout(() => {
-                            alert('⚠️ ยังไม่ได้เชื่อมต่อ Google Sheets\n\nกรุณาใส่ URL ของ Google Apps Script ใน GOOGLE_SCRIPT_URL');
-                            setCurrentStep('success');
-                            setIsSubmitting(false);
-                        }, 2000);
-                        return;
-                    }
-                    
-                    const response = await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'cors',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(formData)
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (result.success) {
-                        setCurrentStep('success');
-                    } else {
-                        alert('เกิดข้อผิดพลาด: ' + result.message);
-                    }
-                    
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('เกิดข้อผิดพลาดในการส่งข้อมูล');
-                } finally {
-                    setIsSubmitting(false);
-                }
-            };
-
-            const resetForm = () => {
-                setFormData({
-                    fullName: '', email: '', phone: '', address: '', education: '',
-                    experience: '', position: '', salary: '', startDate: '', skills: '',
-                    portfolio: '', coverLetter: ''
-                });
-                setCurrentStep('form');
-            };
-
-            // ฟอร์มกรอกข้อมูล
-            if (currentStep === 'form') {
-                return (
-                    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 py-8">
-                        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-                            <div className="mb-8 text-center">
-                                <h1 className="text-3xl font-bold text-gray-800 mb-2">ใบสมัครงาน</h1>
-                                <p className="text-gray-600">กรุณากรอกข้อมูลให้ครบถ้วน</p>
-                            </div>
-
-                            <div className="space-y-6">
-                                {/* ข้อมูลส่วนตัว */}
-                                <div className="bg-blue-50 p-6 rounded-lg">
-                                    <h2 className="text-xl font-semibold text-gray-800 mb-4">ข้อมูลส่วนตัว</h2>
-                                    <div className="grid md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">ชื่อ-นามสกุล *</label>
-                                            <input
-                                                type="text"
-                                                name="fullName"
-                                                value={formData.fullName}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                placeholder="กรอกชื่อ-นามสกุล"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">อีเมล *</label>
-                                            <input
-                                                type="email"
-                                                name="email"
-                                                value={formData.email}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                placeholder="example@email.com"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">เบอร์โทรศัพท์ *</label>
-                                            <input
-                                                type="tel"
-                                                name="phone"
-                                                value={formData.phone}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                placeholder="0XX-XXX-XXXX"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">ตำแหน่งที่สมัคร *</label>
-                                            <select
-                                                name="position"
-                                                value={formData.position}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                            >
-                                                <option value="">เลือกตำแหน่ง</option>
-                                                <option value="Frontend Developer">Frontend Developer</option>
-                                                <option value="Backend Developer">Backend Developer</option>
-                                                <option value="Full Stack Developer">Full Stack Developer</option>
-                                                <option value="UI/UX Designer">UI/UX Designer</option>
-                                                <option value="Project Manager">Project Manager</option>
-                                                <option value="Marketing Executive">Marketing Executive</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="mt-4">
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">ที่อยู่</label>
-                                        <textarea
-                                            name="address"
-                                            value={formData.address}
-                                            onChange={handleInputChange}
-                                            rows="3"
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                            placeholder="กรอกที่อยู่"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* การศึกษาและประสบการณ์ */}
-                                <div className="bg-green-50 p-6 rounded-lg">
-                                    <h2 className="text-xl font-semibold text-gray-800 mb-4">การศึกษาและประสบการณ์</h2>
-                                    <div className="space-y-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">การศึกษา</label>
-                                            <input
-                                                type="text"
-                                                name="education"
-                                                value={formData.education}
-                                                onChange={handleInputChange}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                placeholder="เช่น ปริญญาตรี คอมพิวเตอร์ จุฬาลงกรณ์มหาวิทยาลัย"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">ประสบการณ์การทำงาน</label>
-                                            <textarea
-                                                name="experience"
-                                                value={formData.experience}
-                                                onChange={handleInputChange}
-                                                rows="4"
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                placeholder="อธิบายประสบการณ์การทำงานของคุณ"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">ทักษะ/ความสามารถ</label>
-                                            <input
-                                                type="text"
-                                                name="skills"
-                                                value={formData.skills}
-                                                onChange={handleInputChange}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                placeholder="เช่น JavaScript, React, Node.js, Photoshop"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* รายละเอียดการทำงาน */}
-                                <div className="bg-yellow-50 p-6 rounded-lg">
-                                    <h2 className="text-xl font-semibold text-gray-800 mb-4">รายละเอียดการทำงาน</h2>
-                                    <div className="grid md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">เงินเดือนที่ต้องการ</label>
-                                            <input
-                                                type="text"
-                                                name="salary"
-                                                value={formData.salary}
-                                                onChange={handleInputChange}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                placeholder="เช่น 30,000 - 40,000 บาท"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">วันที่สามารถเริ่มงานได้</label>
-                                            <input
-                                                type="date"
-                                                name="startDate"
-                                                value={formData.startDate}
-                                                onChange={handleInputChange}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="mt-4">
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Portfolio / ผลงาน (URL)</label>
-                                        <input
-                                            type="url"
-                                            name="portfolio"
-                                            value={formData.portfolio}
-                                            onChange={handleInputChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                            placeholder="https://yourportfolio.com"
-                                        />
-                                    </div>
-                                    <div className="mt-4">
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">จดหมายสมัครงาน</label>
-                                        <textarea
-                                            name="coverLetter"
-                                            value={formData.coverLetter}
-                                            onChange={handleInputChange}
-                                            rows="4"
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                            placeholder="แสดงความสนใจและเหตุผลที่ต้องการทำงานกับเรา"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* ปุ่ม */}
-                                <div className="flex gap-4 justify-center">
-                                    <button
-                                        onClick={() => setCurrentStep('preview')}
-                                        className="px-6 py-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors"
-                                    >
-                                        📄 ดูตัวอย่างใบสมัคร
-                                    </button>
-                                    <button
-                                        onClick={handleSubmit}
-                                        disabled={isSubmitting}
-                                        className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-                                    >
-                                        {isSubmitting ? '⏳ กำลังส่งข้อมูล...' : '📤 ส่งใบสมัคร'}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Main Form -->
+    <div class="container main-container">
+        <form id="applicationForm" class="needs-validation" novalidate>
+            
+            <!-- Section 1: ตำแหน่งที่สมัคร -->
+            <div class="form-section">
+                <h4 class="section-title">1. ตำแหน่งงานที่ต้องการ / Applied Position</h4>
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label for="position" class="form-label required">ตำแหน่งที่ต้องการ</label>
+                        <input type="text" class="form-control" id="position" name="position" required>
+                        <div class="invalid-feedback">กรุณากรอกตำแหน่งที่ต้องการ</div>
                     </div>
-                );
-            }
-
-            // หน้าดูตัวอย่าง
-            if (currentStep === 'preview') {
-                return (
-                    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 py-8">
-                        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-                            <div className="mb-8 text-center">
-                                <h1 className="text-3xl font-bold text-gray-800 mb-2">ตัวอย่างใบสมัครงาน</h1>
-                                <p className="text-gray-600">ตรวจสอบข้อมูลก่อนส่ง</p>
-                            </div>
-
-                            <div className="border-2 border-gray-300 p-8 rounded-lg bg-gray-50">
-                                <div className="text-center mb-6">
-                                    <h2 className="text-2xl font-bold text-gray-800">บริษัท ABC จำกัด</h2>
-                                    <p className="text-gray-600">ใบสมัครงาน</p>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <div className="grid md:grid-cols-2 gap-6">
-                                        <div>
-                                            <p><strong>ชื่อ-นามสกุล:</strong> {formData.fullName || '-'}</p>
-                                            <p><strong>อีเมล:</strong> {formData.email || '-'}</p>
-                                            <p><strong>เบอร์โทรศัพท์:</strong> {formData.phone || '-'}</p>
-                                        </div>
-                                        <div>
-                                            <p><strong>ตำแหน่งที่สมัคร:</strong> {formData.position || '-'}</p>
-                                            <p><strong>เงินเดือนที่ต้องการ:</strong> {formData.salary || '-'}</p>
-                                            <p><strong>วันที่สามารถเริ่มงาน:</strong> {formData.startDate || '-'}</p>
-                                        </div>
-                                    </div>
-
-                                    {formData.address && (
-                                        <div><p><strong>ที่อยู่:</strong></p><p className="ml-4">{formData.address}</p></div>
-                                    )}
-                                    {formData.education && <p><strong>การศึกษา:</strong> {formData.education}</p>}
-                                    {formData.skills && <p><strong>ทักษะ:</strong> {formData.skills}</p>}
-                                    {formData.experience && (
-                                        <div><p><strong>ประสบการณ์:</strong></p><p className="ml-4 whitespace-pre-line">{formData.experience}</p></div>
-                                    )}
-                                    {formData.portfolio && (
-                                        <p><strong>Portfolio:</strong> <a href={formData.portfolio} target="_blank" className="text-blue-600 hover:underline">{formData.portfolio}</a></p>
-                                    )}
-                                    {formData.coverLetter && (
-                                        <div><p><strong>จดหมายสมัครงาน:</strong></p><p className="ml-4 whitespace-pre-line">{formData.coverLetter}</p></div>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className="flex gap-4 justify-center mt-8">
-                                <button
-                                    onClick={() => setCurrentStep('form')}
-                                    className="px-6 py-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors"
-                                >
-                                    ✏️ แก้ไขข้อมูล
-                                </button>
-                                <button
-                                    onClick={handleSubmit}
-                                    disabled={isSubmitting}
-                                    className="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
-                                >
-                                    {isSubmitting ? '⏳ กำลังส่งข้อมูล...' : '✅ ยืนยันและส่งใบสมัคร'}
-                                </button>
-                            </div>
-                        </div>
+                    <div class="col-md-4">
+                        <label for="expectedSalary" class="form-label">เงินเดือนที่ต้องการ (บาท)</label>
+                        <input type="number" class="form-control" id="expectedSalary" name="expectedSalary">
                     </div>
-                );
-            }
-
-            // หน้าสำเร็จ
-            return (
-                <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 py-8">
-                    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg text-center">
-                        <div className="text-green-500 text-6xl mb-4">✅</div>
-                        <h1 className="text-3xl font-bold text-gray-800 mb-4">ส่งใบสมัครเรียบร้อย!</h1>
-                        <p className="text-gray-600 mb-6">
-                            ขอบคุณที่ส่งใบสมัครงานมาให้เรา เราจะติดต่อกลับภายใน 3-5 วันทำการ
-                        </p>
-                        <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                            <p className="text-sm text-blue-800">
-                                <strong>หมายเหตุ:</strong> ข้อมูลของคุณได้ถูกบันทึกลงใน Google Sheets เรียบร้อยแล้ว
-                            </p>
-                        </div>
-                        <button
-                            onClick={resetForm}
-                            className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                            🔄 สมัครงานใหม่
-                        </button>
+                    <div class="col-md-6">
+                        <label for="startDate" class="form-label">วันที่พร้อมจะเริ่มงานได้</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate">
                     </div>
                 </div>
-            );
-        };
+            </div>
 
-        ReactDOM.render(<JobApplicationSystem />, document.getElementById('root'));
-    </script>
+            <!-- Section 2: รายละเอียดส่วนตัว -->
+            <div class="form-section">
+                <h4 class="section-title">2. รายละเอียดส่วนตัว / Personal Details</h4>
+                <div class="row g-3">
+                    <div class="col-md-2">
+                        <label for="title" class="form-label required">คำนำหน้า</label>
+                        <select class="form-select" id="title" name="title" required>
+                            <option value="">เลือก</option>
+                            <option value="นาย">นาย</option>
+                            <option value="นาง">นาง</option>
+                            <option value="นางสาว">นางสาว</option>
+                        </select>
+                        <div class="invalid-feedback">กรุณาเลือกคำนำหน้า</div>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="firstNameTH" class="form-label required">ชื่อ (ภาษาไทย)</label>
+                        <input type="text" class="form-control" id="firstNameTH" name="firstNameTH" required>
+                        <div class="invalid-feedback">กรุณากรอกชื่อ</div>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="lastNameTH" class="form-label required">นามสกุล (ภาษาไทย)</label>
+                        <input type="text" class="form-control" id="lastNameTH" name="lastNameTH" required>
+                        <div class="invalid-feedback">กรุณากรอกนามสกุล</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="firstNameEN" class="form-label">First Name (English)</label>
+                        <input type="text" class="form-control" id="firstNameEN" name="firstNameEN">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="lastNameEN" class="form-label">Last Name (English)</label>
+                        <input type="text" class="form-control" id="lastNameEN" name="lastNameEN">
+                    </div>
+                    <div class="col-md-12">
+                        <label for="address" class="form-label required">ที่อยู่ปัจจุบัน</label>
+                        <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
+                        <div class="invalid-feedback">กรุณากรอกที่อยู่</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="phone" class="form-label required">เบอร์โทรศัพท์</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" 
+                               pattern="[0-9]{9,10}" required>
+                        <div class="invalid-feedback">กรุณากรอกเบอร์โทรศัพท์ที่ถูกต้อง</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="email" class="form-label required">อีเมล</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="invalid-feedback">กรุณากรอกอีเมลที่ถูกต้อง</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="birthDate" class="form-label required">วันเดือนปีเกิด</label>
+                        <input type="date" class="form-control" id="birthDate" name="birthDate" required>
+                        <div class="invalid-feedback">กรุณาเลือกวันเกิด</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="idCard" class="form-label required">บัตรประชาชนเลขที่</label>
+                        <input type="text" class="form-control" id="idCard" name="idCard" 
+                               pattern="[0-9]{13}" maxlength="13" required>
+                        <div class="invalid-feedback">กรุณากรอกเลขบัตรประชาชน 13 หลัก</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="nationality" class="form-label">สัญชาติ</label>
+                        <input type="text" class="form-control" id="nationality" name="nationality" value="ไทย">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="religion" class="form-label">ศาสนา</label>
+                        <input type="text" class="form-control" id="religion" name="religion">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="maritalStatus" class="form-label">สถานภาพสมรส</label>
+                        <select class="form-select" id="maritalStatus" name="maritalStatus">
+                            <option value="">เลือก</option>
+                            <option value="โสด">โสด</option>
+                            <option value="สมรส">สมรส</option>
+                            <option value="หย่า">หย่า</option>
+                            <option value="หม้าย">หม้าย</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="militaryStatus" class="form-label">สถานภาพทางทหาร</label>
+                        <select class="form-select" id="militaryStatus" name="militaryStatus">
+                            <option value="">เลือก</option>
+                            <option value="ได้รับการยกเว้น">ได้รับการยกเว้น</option>
+                            <option value="ยังไม่ผ่านการเกณฑ์">ยังไม่ผ่านการเกณฑ์</option>
+                            <option value="ผ่านการเกณฑ์แล้ว">ผ่านการเกณฑ์แล้ว</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: ประวัติการศึกษา -->
+            <div class="form-section">
+                <h4 class="section-title">3. ประวัติการศึกษา / Educational Background</h4>
+                <div id="educationContainer">
+                    <div class="education-entry border p-3 mb-3 rounded">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">ระดับการศึกษา</label>
+                                <select class="form-select" name="eduLevel[]">
+                                    <option value="">เลือก</option>
+                                    <option value="ปริญญาเอก">ปริญญาเอก</option>
+                                    <option value="ปริญญาโท">ปริญญาโท</option>
+                                    <option value="ปริญญาตรี">ปริญญาตรี</option>
+                                    <option value="ปวส.">ปวส.</option>
+                                    <option value="ม.6">ม.6</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">ชื่อสถานศึกษา</label>
+                                <input type="text" class="form-control" name="eduInstitution[]">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">ปีที่สำเร็จการศึกษา</label>
+                                <input type="number" class="form-control" name="eduYear[]" 
+                                       min="1950" max="2030">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">วุฒิที่ได้รับ</label>
+                                <input type="text" class="form-control" name="eduDegree[]">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">สาขาวิชา</label>
+                                <input type="text" class="form-control" name="eduMajor[]">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">เกรดเฉลี่ย (GPA)</label>
+                                <input type="number" class="form-control" name="eduGPA[]" 
+                                       step="0.01" min="0" max="4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="addEducation()">
+                    + เพิ่มประวัติการศึกษา
+                </button>
+            </div>
+
+            <!-- Section 4: ประวัติการทำงาน -->
+            <div class="form-section">
+                <h4 class="section-title">4. ประวัติการทำงาน / Employment History</h4>
+                <div id="workContainer">
+                    <div class="work-entry border p-3 mb-3 rounded">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label">ชื่อบริษัท/หน่วยงาน</label>
+                                <input type="text" class="form-control" name="workCompany[]">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">ตำแหน่ง</label>
+                                <input type="text" class="form-control" name="workPosition[]">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">ปีที่เริ่มงาน</label>
+                                <input type="number" class="form-control" name="workStartYear[]" 
+                                       min="1990" max="2030">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">ปีที่ออก</label>
+                                <input type="number" class="form-control" name="workEndYear[]" 
+                                       min="1990" max="2030">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">เงินเดือนสุดท้าย (บาท)</label>
+                                <input type="number" class="form-control" name="workSalary[]">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">สาเหตุที่ออก</label>
+                                <input type="text" class="form-control" name="workReason[]">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="addWork()">
+                    + เพิ่มประวัติการทำงาน
+                </button>
+            </div>
+
+            <!-- Section 5: ความสามารถพิเศษ -->
+            <div class="form-section">
+                <h4 class="section-title">5. ความสามารถพิเศษ / Special Skills & Abilities</h4>
+                <div class="row g-3">
+                    <div class="col-md-12">
+                        <label for="computerSkills" class="form-label">ความรู้ด้านคอมพิวเตอร์</label>
+                        <textarea class="form-control" id="computerSkills" name="computerSkills" 
+                                  rows="2" placeholder="เช่น Microsoft Office, Adobe Photoshop, ฯลฯ"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">ภาษาอังกฤษ - ระดับความสามารถ</label>
+                        <select class="form-select" name="englishLevel">
+                            <option value="">เลือก</option>
+                            <option value="พอใช้">พอใช้</option>
+                            <option value="ดี">ดี</option>
+                            <option value="ดีมาก">ดีมาก</option>
+                            <option value="ดีเลิศ">ดีเลิศ</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="otherLanguages" class="form-label">ภาษาอื่นๆ (ระบุภาษาและระดับ)</label>
+                        <input type="text" class="form-control" id="otherLanguages" name="otherLanguages"
+                               placeholder="เช่น จีนกลาง - ดี, ญี่ปุ่น - พอใช้">
+                    </div>
+                    <div class="col-md-12">
+                        <label for="specialSkills" class="form-label">ความสามารถพิเศษอื่นๆ</label>
+                        <textarea class="form-control" id="specialSkills" name="specialSkills" 
+                                  rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6: เอกสารแนบ -->
+            <div class="form-section">
+                <h4 class="section-title">6. เอกสารประกอบการสมัคร / Required Documents</h4>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="photoUpload" class="form-label required">รูปถ่าย (JPG, PNG)</label>
+                        <input type="file" class="form-control" id="photoUpload" name="photoUpload" 
+                               accept="image/jpeg,image/png" required>
+                        <small class="text-muted">ขนาดไม่เกิน 2 MB</small>
+                        <div class="invalid-feedback">กรุณาแนบรูปถ่าย</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="resumeUpload" class="form-label required">เรซูเม่/ประวัติส่วนตัว (PDF)</label>
+                        <input type="file" class="form-control" id="resumeUpload" name="resumeUpload" 
+                               accept="application/pdf" required>
+                        <small class="text-muted">ขนาดไม่เกิน 5 MB</small>
+                        <div class="invalid-feedback">กรุณาแนบเรซูเม่</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="transcriptUpload" class="form-label">ใบรายงานผลการศึกษา (PDF)</label>
+                        <input type="file" class="form-control" id="transcriptUpload" name="transcriptUpload" 
+                               accept="application/pdf">
+                        <small class="text-muted">ขนาดไม่เกิน 5 MB</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="otherDocs" class="form-label">เอกสารอื่นๆ (PDF)</label>
+                        <input type="file" class="form-control" id="otherDocs" name="otherDocs" 
+                               accept="application/pdf">
+                        <small class="text-muted">ขนาดไม่เกิน 5 MB</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 7: คำรับรอง -->
+            <div class="form-section">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="certify" name="certify" required>
+                    <label class="form-check-label" for="certify">
+                        <strong>ข้าพเจ้าขอรับรองว่า</strong> ข้อความที่ระบุไว้ในใบสมัครนี้เป็นความจริงและครบถ้วน 
+                        ข้าพเจ้าทราบดีว่าหากระบุข้อความที่บิดเบือนจากความเป็นจริง 
+                        จะเป็นสาเหตุให้ถูกตัดสิทธิจากการเป็นพนักงาน และ/หรือถูกปลดออกจากงานทันทีโดยไม่ได้รับเงินชดเชย
+                    </label>
+                    <div class="invalid-feedback">กรุณายอมรับข้อตกลง</div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center mb-4">
+                <button type="submit" class="btn btn-primary btn-lg px-5" id="submitBtn">
+                    <span id="submitText">ส่งใบสมัคร</span>
+                    <span id="submitSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status">
+                        <span class="visually-hidden">กำลังส่ง...</span>
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        ส่งใบสมัครสำเร็จ
+                    </h5>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <p class="mb-0">ขอบคุณสำหรับการสมัครงาน</p>
+                    <p class="mb-0">ท่านจะได้รับอีเมลยืนยันการสมัครในไม่ช้า</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="window.location.reload()">
+                        ปิด
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="script.js"></script>
 </body>
-
 </html>

@@ -1,0 +1,324 @@
+/* Google Fonts - Sarabun */
+* {
+    font-family: 'Sarabun', sans-serif;
+}
+
+/* Root Variables */
+:root {
+    --primary-color: #1e3a5f;
+    --secondary-color: #2c5282;
+    --accent-color: #4a90e2;
+    --text-dark: #2d3748;
+    --text-muted: #718096;
+    --bg-light: #f7fafc;
+    --border-color: #e2e8f0;
+    --white: #ffffff;
+}
+
+/* Body */
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Header */
+.header-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: var(--white);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    max-width: 100px;
+    height: auto;
+    filter: brightness(0) invert(1);
+}
+
+.institute-name {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--white);
+}
+
+.institute-name-en {
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 1px;
+}
+
+.form-title {
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-top: 10px;
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+/* Main Container */
+.main-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+}
+
+/* Form Sections */
+.form-section {
+    margin-bottom: 35px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+}
+
+.section-title {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent-color);
+    display: inline-block;
+}
+
+/* Form Controls */
+.form-label {
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.form-label.required::after {
+    content: " *";
+    color: #e53e3e;
+    font-weight: 600;
+}
+
+.form-control,
+.form-select {
+    border: 1.5px solid var(--border-color);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.form-control:hover,
+.form-select:hover {
+    border-color: var(--secondary-color);
+}
+
+/* Education and Work Entry Cards */
+.education-entry,
+.work-entry {
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color) !important;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.education-entry:hover,
+.work-entry:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    font-weight: 500;
+    padding: 12px 32px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 58, 95, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* Checkbox */
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.form-check-label {
+    color: var(--text-dark);
+    line-height: 1.7;
+}
+
+/* File Upload */
+input[type="file"] {
+    padding: 8px 12px;
+}
+
+input[type="file"]::file-selector-button {
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    padding: 6px 16px;
+    border-radius: 4px;
+    margin-right: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+}
+
+/* Text Muted */
+.text-muted {
+    color: var(--text-muted) !important;
+    font-size: 0.85rem;
+}
+
+/* Invalid Feedback */
+.invalid-feedback {
+    font-size: 0.875rem;
+    color: #e53e3e;
+}
+
+/* Modal */
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 20px 24px;
+}
+
+.modal-body {
+    padding: 30px 24px;
+    font-size: 1.05rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-container {
+        margin: 20px;
+        padding: 25px 20px;
+    }
+
+    .institute-name {
+        font-size: 1.4rem;
+    }
+
+    .institute-name-en {
+        font-size: 0.9rem;
+    }
+
+    .form-title {
+        font-size: 1.1rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+    }
+
+    .logo {
+        max-width: 80px;
+    }
+}
+
+@media (max-width: 576px) {
+    .header-section .row {
+        text-align: center;
+    }
+
+    .btn-lg {
+        width: 100%;
+    }
+}
+
+/* Loading State */
+#submitBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Smooth Animations */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background-color: white;
+    }
+
+    .header-section {
+        background: white;
+        color: black;
+    }
+
+    .btn,
+    .modal {
+        display: none;
+    }
+
+    .main-container {
+        box-shadow: none;
+        margin: 0;
+        padding: 20px;
+    }
+}
