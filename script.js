@@ -3,7 +3,7 @@
 // ==================================================
 
 // !!! สำคัญ: เปลี่ยน URL นี้เป็น URL ของ Google Apps Script ที่คุณ Deploy แล้ว
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyEGz_Bpfwuc7k_51vsRHcGNI-4eN_mVkCibny3VFyQNL6Tf4LIRhsBGVTuAW23uHg/exec';
+const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
 
 // ==================================================
 // Form Validation
@@ -263,13 +263,14 @@ async function handleFormSubmit() {
             timestamp: new Date().toISOString()
         };
 
-        // Send to Google Apps Script
+        // Send to Google Apps Script using URLSearchParams to avoid CORS preflight
+        const params = new URLSearchParams();
+        params.append('data', JSON.stringify(data));
+
         const response = await fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            body: params,
+            redirect: 'follow'
         });
 
         const result = await response.json();
