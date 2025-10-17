@@ -6,6 +6,38 @@
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyEGz_Bpfwuc7k_51vsRHcGNI-4eN_mVkCibny3VFyQNL6Tf4LIRhsBGVTuAW23uHg/exec';
 
 // ==================================================
+// Listen for postMessage from iframe
+// ==================================================
+
+window.addEventListener('message', function(event) {
+    // Handle response from Google Apps Script
+    if (event.data && event.data.status) {
+        const submitBtn = document.getElementById('submitBtn');
+        const submitText = document.getElementById('submitText');
+        const submitSpinner = document.getElementById('submitSpinner');
+        
+        if (event.data.status === 'success') {
+            // Show success modal
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+            
+            // Reset form
+            const form = document.getElementById('applicationForm');
+            form.reset();
+            form.classList.remove('was-validated');
+        } else {
+            // Show error
+            alert('เกิดข้อผิดพลาด: ' + event.data.message + '\n\nกรุณาลองใหม่อีกครั้ง');
+        }
+        
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitText.textContent = 'ส่งใบสมัคร';
+        submitSpinner.classList.add('d-none');
+    }
+});
+
+// ==================================================
 // Form Validation
 // ==================================================
 
@@ -263,34 +295,42 @@ async function handleFormSubmit() {
             timestamp: new Date().toISOString()
         };
 
-        // Send to Google Apps Script using URLSearchParams to avoid CORS preflight
-        const params = new URLSearchParams();
-        params.append('data', JSON.stringify(data));
-
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            body: params,
-            redirect: 'follow'
-        });
-
-        const result = await response.json();
-
-        if (result.status === 'success') {
-            // Show success modal
-            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-            successModal.show();
-            
-            // Reset form
-            form.reset();
-            form.classList.remove('was-validated');
-        } else {
-            throw new Error(result.message || 'เกิดข้อผิดพลาดในการส่งข้อมูล');
+        // Create a hidden iframe for submission
+        let iframe = document.getElementById('hidden-iframe');
+        if (!iframe) {
+            iframe = document.createElement('iframe');
+            iframe.id = 'hidden-iframe';
+            iframe.name = 'hidden-iframe';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
         }
+
+        // Create a hidden form
+        const hiddenForm = document.createElement('form');
+        hiddenForm.method = 'POST';
+        hiddenForm.action = GOOGLE_SCRIPT_URL;
+        hiddenForm.target = 'hidden-iframe';
+
+        // Add data as hidden input
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'data';
+        input.value = JSON.stringify(data);
+        hiddenForm.appendChild(input);
+
+        // Add form to body and submit
+        document.body.appendChild(hiddenForm);
+        hiddenForm.submit();
+
+        // Clean up form (but keep iframe for receiving response)
+        setTimeout(() => {
+            document.body.removeChild(hiddenForm);
+        }, 100);
 
     } catch (error) {
         console.error('Error:', error);
         alert('เกิดข้อผิดพลาด: ' + error.message + '\n\nกรุณาลองใหม่อีกครั้ง หรือติดต่อเจ้าหน้าที่');
-    } finally {
+        
         // Re-enable submit button
         submitBtn.disabled = false;
         submitText.textContent = 'ส่งใบสมัคร';
